@@ -1,106 +1,75 @@
-# Mobile Engineering DSA & Systems Handbook
+# Scalable Systems & Engineering Patterns Handbook
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.9-purple.svg)](https://kotlinlang.org)
 [![Dart](https://img.shields.io/badge/Dart-3.0-blue.svg)](https://dart.dev)
-[![Flutter](https://img.shields.io/badge/Flutter-3.x-cyan.svg)](https://flutter.dev)
-[![Architecture](https://img.shields.io/badge/Architecture-Clean-brightgreen.svg)]()
-[![System Design](https://img.shields.io/badge/System%20Design-Mobile-orange.svg)]()
+[![System Design](https://img.shields.io/badge/System%20Design-Universal-orange.svg)]()
+[![Build](https://img.shields.io/badge/Build-Production-brightgreen.svg)]()
 
-A production-grade, pattern-oriented DSA and problem-solving platform specifically designed for scalable mobile engineering, Flutter/Dart isolates, JVM/Kotlin thread-safety, asynchronous streaming concurrency, and low-latency system design.
+A production-grade, pattern-oriented handbook connecting classical computer science algorithms, runtime engine mechanics, and distributed resilience systems to real-world software engineering across backend systems and mobile platforms.
 
 ---
 
 ## 🚀 The Philosophy: Why This Repository Exists
 
-Most standard DSA repositories feel like a random dump of competitive programming tricks or solved LeetCode archives. However, **senior mobile engineers do not write competitive code; they build highly responsive client systems.**
+Most standard DSA and system design repositories are split into two disjoint categories:
+1. **Competitive Programming Archives**: Solve arbitrary, puzzle-style LeetCode challenges that do not map to real-world code.
+2. **Abstract System Design Templates**: Show general block-diagram architectures without connecting them to actual runtime threads, heap limits, and compiler behaviors.
 
-Mobile engineering sits at a unique intersection of severe environmental constraints:
-* **Frame Rate Budgets**: Smooth rendering requires updating the UI every $16.6\text{ms}$ ($60\text{Hz}$) or $8.3\text{ms}$ ($120\text{Hz}$). Blocking the main thread for even a single frame triggers **stutter** (dropped frames).
-* **Power & Thermal Limits**: Infinite background polling or running redundant threads will trigger OS battery-saver terminations.
-* **Network Volatility**: Mobile networks drop connection, transition between Wi-Fi and 5G towers, and suffer high latency.
-* **Heap Constraints**: Decoding massive raw images/bitmaps can instantly trigger Out-Of-Memory (OOM) crashes if memory allocation is unmanaged.
+**This handbook bridges the gap.**
 
-This repository serves as a **handbook connecting classical algorithms directly to high-performance client systems** in idiomatic **Dart (Flutter)** and **Kotlin (Android)**.
-
----
-
-## 🌟 Featured Engineering Problems
-
-### 1. [LRU Cache](./mobile-engineering-dsa/caching/lru_cache.md) (HashMap + Doubly Linked List)
-* **Goal**: Maintain constant $O(1)$ lookups and cache eviction under predictable memory limits.
-* **Client System Mapping**: Bitmap rendering engines (Glide, Coil, Kingfisher) hold decoded UI textures in heap using LRU allocations, evicting off-screen images automatically to prevent OOM spikes.
-
-### 2. [Thread-Safe Producer-Consumer Queue](./mobile-engineering-dsa/concurrency/producer_consumer.md) (Bounded Suspension Channels)
-* **Goal**: Safe, non-blocking transfer of data streams between asynchronous producers and background workers.
-* **Client System Mapping**: Local log telemetry managers. UI interactions write diagnostic events to a bounded buffer, while a single background coroutine drains the buffer to batch uploads without freezing the UI.
-
-### 3. [Priority Task Scheduler](./mobile-engineering-dsa/scheduling/task_scheduler.md) (Binary Max-Heap)
-* **Goal**: Logarithmic $O(\log N)$ task insertions and priority extractions, resolving ties via chronological timestamps.
-* **Client System Mapping**: Network task managers. Instant chat messages override telemetry flushes, queuing tasks in priority order and respecting device power configurations.
-
-### 4. [BFS Navigation Graph](./patterns/graphs/bfs_navigation_system.md) (Unweighted Shortest-Path Traversal)
-* **Goal**: Graph traversal that resolves screen pathways and constructs valid view backstacks.
-* **Client System Mapping**: Deep Link Routers. When parsing deep URLs, the engine runs a BFS to build the backstack sequence so the system back button returns the user through standard logical view hierarchies.
-
-### 5. [Offline-First Sync Engine](./system-design-mobile/offline_sync_engine.md) (Changelog Delta Sync)
-* **Goal**: Eventual consistency between client-side SQLite databases and server repositories.
-* **Client System Mapping**: Persistent outboxes, dynamic conflict-resolution (LWW, CRDTs), and HTTP call retries executing with randomized Exponential Backoff and Jitter.
+We believe senior software engineers, platform architects, and systems developers need a deep, unified understanding of:
+* **Algorithmic Optimizations**: Monotonic deques, graphs, heaps, and sliding window boundaries.
+* **Runtime Internals**: Generational Garbage Collection, heap fragmentation, stack frame allocation, single-threaded event loops, and coroutine Continuation state machines.
+* **Concurrency Primitives**: Lock-free Compare-And-Swap (CAS), condition variables, counting semaphores, and reactive flow backpressure.
+* **Distributed Resiliency**: State-driven circuit breakers, randomized exponential backoff and jitter, dynamic rate limiting, and write-replication consistency models.
+* **Engineering Specializations**: Scaling stateful WebSockets, API Gateway reverse proxies, client rendering pipelines, outbox synchronization, and decoded image memory limitations.
 
 ---
 
-## 🗺️ Learning & Progression Roadmap
+## 🌟 Handbook Modules & Architecture
 
 ```
-  +-------------------------------------------------------------+
-  |                   LEVEL 1: CS FUNDAMENTALS                  |
-  |   Dynamic Sliding Windows | Monotonic Deques | Two Pointers |
-  +------------------------------+------------------------------+
-                                 |
-                                 v
-  +-------------------------------------------------------------+
-  |            LEVEL 2: ASYNC CONCURRENCY & RUNTIMES            |
-  |  Dart Event Loops | Isolate SendPorts | Kotlin Dispatchers  |
-  +------------------------------+------------------------------+
-                                 |
-                                 v
-  +-------------------------------------------------------------+
-  |              LEVEL 3: MEMORY & CACHING SYSTEMS              |
-  |     LRU Bitmap Allocators | LFU Buckets | GC Protection     |
-  +------------------------------+------------------------------+
-                                 |
-                                 v
-  +-------------------------------------------------------------+
-  |          LEVEL 4: SCHEDULING & DATA RETRY PIPELINES         |
-  |   Binary Max-Heaps | Exponential Backoff with Jitter | DBs  |
-  +------------------------------+------------------------------+
-                                 |
-                                 v
-  +-------------------------------------------------------------+
-  |                 LEVEL 5: MOBILE SYSTEM DESIGN               |
-  |   P2P WebRTC Signals | Silent Push Decryption | Paginated   |
-  +-------------------------------------------------------------+
+                                  +---------------------------------------+
+                                  |     Scalable Systems Handbook Core    |
+                                  +-------------------+-------------------+
+                                                      |
+              +---------------------------------------+---------------------------------------+
+              |                                       |                                       |
+    +---------v---------+                   +---------v---------+                   +---------v---------+
+    |   Algorithmic CS  |                   |  Runtime Internals|                   |    Resilient DS   |
+    |  - Monotonic Deq  |                   |  - Stack vs Heap  |                   |  - Circuit Break  |
+    |  - Topo Sorting   |                   |  - Cheney's GC    |                   |  - Jitter Backoff |
+    |  - Sliding Window |                   |  - CPS State Mach |                   |  - Token Bucket   |
+    +---------+---------+                   +---------+---------+                   +---------+---------+
+              |                                       |                                       |
+              +---------------------------------------+---------------------------------------+
+                                                      |
+                                      +---------------+---------------+
+                                      |                               |
+                            +---------v---------+           +---------v---------+
+                            |  Backend Scale    |           |   Mobile Systems  |
+                            |  - Redis Pub/Sub  |           |  - Decoded Memory |
+                            |  - Gateway Auth   |           |  - 3-Tree Render  |
+                            |  - Task Queues    |           |  - Outbox Sync    |
+                            +-------------------+           +-------------------+
 ```
 
-1. **Fundamentals**: Start with [Sliding Window Maximum](./patterns/sliding-window/sliding_window_maximum.md) (monotonic deque) and [Longest Substring](./patterns/sliding-window/longest_substring_without_repeating.md).
-2. **Async & Concurrency**: Deep-dive into [Producer-Consumer Queue](./mobile-engineering-dsa/concurrency/producer_consumer.md), [Dart Runtime Mechanics](./dart-runtime/README.md), and [JVM Kotlin coroutines](./kotlin-runtime/README.md).
-3. **Caching**: Study [LRU Cache](./mobile-engineering-dsa/caching/lru_cache.md) and [LFU Cache](./mobile-engineering-dsa/caching/lfu_cache.md).
-4. **Scheduling**: Understand [Heap Priority Queues](./mobile-engineering-dsa/scheduling/priority_queue.md) and [WorkManager Constraints](./mobile-engineering-dsa/scheduling/work_manager_concepts.md).
-5. **System Design**: Build architectural blueprints for [Chat Clients](./system-design-mobile/chat_system_design.md), [Push Delivery Pipelines](./system-design-mobile/notification_delivery_pipeline.md), and [WebRTC Calling](./system-design-mobile/video_calling_architecture.md).
+---
+
+## 📂 Repository Directory Index
+
+* **[`patterns/`](./patterns/)**: Algorithmic paradigms (two pointers, sliding windows, heaps, trie searches, topological graphs) annotated with complexity charts.
+* **[`runtime-systems/`](./runtime-systems/)**: Memory allocations (stack vs. heap), garbage collection compaction, V8/Dart event loops, and JVM coroutine internals.
+* **[`concurrency/`](./concurrency/)**: Mutexes, semaphores, atomic operations, thread coordination, and thread-safe queues.
+* **[`distributed-systems/`](./distributed-systems/)**: Resiliency structures including circuit breakers, retry policies, and dynamic rate limiting.
+* **[`system-design/`](./system-design/)**: Caching topologies (LRU, LFU) and OAuth 2.0 PKCE secure session management.
+* **[`backend-systems/`](./backend-systems/)**: Horizontal WebSocket architectures, API gateways, background task queues, and telemetry pipelines.
+* **[`mobile-systems/`](./mobile-systems/)**: Low-level client pipelines: custom render passes, image memory metrics, video streaming, and push notification routes.
+* **[`interview-notes/`](./interview-notes/)**: Technical prep cheat sheets on concurrency, memory leaks, and runtime systems.
 
 ---
 
-## 🛠️ Complete Directory Structure
-
-* **[`patterns/`](./patterns/)**: Classical algorithmic paradigms (arrays, sliding-window, trie searches, topological sorting) annotated with structural diagrams.
-* **[`mobile-engineering-dsa/`](./mobile-engineering-dsa/)**: Multi-platform bounded buffers, priority task schedulers, outbox mutation synchronization, and LFU caching engines.
-* **[`dart-runtime/`](./dart-runtime/README.md)**: Deep-dive into single-threaded Isolate sandboxes, Microtask vs. Event queues, Future FSM compiler transformations, and Cheney's generational Garbage Collector.
-* **[`kotlin-runtime/`](./kotlin-runtime/README.md)**: Deep-dive into JVM stack frames, garbage-collected heaps, Continuation-Passing Style coroutine state machine compilation, and atomic CAS loops.
-* **[`system-design-mobile/`](./system-design-mobile/)**: Enterprise-grade, multi-device mobile architecture blueprints covering offline synchronization, WebRTC signaling, list prefetching boundaries, and secure enclaves.
-* **[`interview-notes/`](./interview-notes/)**: Senior-level cheat sheets detailing Flutter's three-tree layout pipelines, memory leak analysis, inline optimizations, and runtime dispatcher selections.
-
----
-
-## 📄 License & Metadata
+## 📄 License & Target Audience
 * **License**: [MIT License](./LICENSE)
-* **Target Audience**: Senior Mobile Engineers, Flutter Architects, Android Platform Specialists, and Recruitment Leads looking for production-grade algorithms.
+* **Target Audience**: Senior Software Engineers, Systems Architects, Mobile Platform Leads, and Distributed Systems Engineers.

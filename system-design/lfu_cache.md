@@ -1,6 +1,11 @@
 # Least Frequently Used (LFU) Cache
 
+This document details the design architecture, problem constraints, complexity tradeoffs, and real-world system applications of a Least Frequently Used (LFU) cache.
+
+---
+
 ## 1. Problem Statement
+
 Design and implement a data structure for a **Least Frequently Used (LFU) cache**.
 
 Implement the `LFUCache` class:
@@ -30,24 +35,27 @@ To achieve absolute constant $O(1)$ time for both lookups and eviction, a single
      | Frequency 1 |                             | Frequency 2 |
      +------+------+                             +------+------+
             |                                           |
- [Head] <-> [Node A] <-> [Node B] <-> [Tail]     [Head] <-> [Node C] <-> [Tail]
-             (MRU)        (LRU for freq 1)
+  [Head] <-> [Node A] <-> [Node B] <-> [Tail]    [Head] <-> [Node C] <-> [Tail]
+              (MRU)        (LRU for freq 1)
 ```
 
 ---
 
-## 3. Real-World Mobile Engineering Use Cases
+## 3. Real-World Systems Engineering Use Cases
 
-### 1. Database Translation Caching & Static Configurations
-* In dynamic globalized apps, the system converts translation keys or static enum mappings (e.g. mapping string configurations to regional settings). Fetching these from local databases on every screen draw is expensive. Since certain translation labels are accessed constantly (high frequency) while others are rarely loaded, an LFU Cache prevents the garbage collector from sweeping highly active labels, while evicting rarely used ones.
+### 1. Content Delivery Network (CDN) Edge Caching
+CDNs cache server responses (HTML pages, scripts, static media assets) at edge nodes located geographically close to users. Because storage at edge caches is limited, CDN proxies use LFU eviction policies to retain highly viral assets (accessed thousands of times per minute) in high-speed RAM, while rarely accessed long-tail assets are evicted to disk or downstream origin servers.
+
+### 2. Localized Database Configurations & Dictionaries
+In global application architectures, system translation databases and static regional configuration schemas are queried constantly during API request processing. Since configurations are modified rarely but queried at high frequencies, caching them in an LFU buffer prevents cache churn during bulk transactions while evicting stale records, keeping active translation keys in memory.
 
 ---
 
 ## 4. Complexity & Tradeoffs
 
-* **Time Complexity:** $O(1)$ for both `get` and `put`. Accessing maps, moving nodes between frequency lists, and popping the head/tail are all done with pointers in constant time.
+* **Time Complexity:** $O(1)$ for both `get` and `put` operations.
 * **Space Complexity:** $O(C)$ where $C$ is the cache capacity.
-* **Tradeoffs:** LFU requires significant boilerplate and structure tracking (two HashMaps, dynamic Doubly Linked List structures, and active frequency trackers). The code takes up a larger footprint and consumes minor overhead, but guarantees absolute performance.
+* **Tradeoffs:** LFU requires significant runtime metadata overhead (maintaining two maps, pointer adjustments across lists, and frequency boundaries), but guarantees constant time bounds under high read load.
 
 ---
 

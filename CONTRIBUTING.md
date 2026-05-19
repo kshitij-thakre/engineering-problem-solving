@@ -1,24 +1,34 @@
-# Contributing to Mobile Engineering DSA Platform
+# Contributing to Scalable Systems & Engineering Patterns Handbook
 
-Thank you for your interest in contributing to the **Mobile Engineering DSA & Systems Platform**! This repository aims to bridge the gap between academic computer science and practical, real-world client-side architectures.
-
----
-
-## 1. Repository Philosophy
-Our key guideline is **Quality Over Quantity**. We do not accept random, undocumented dumps of standard competitive coding solutions. Every pattern, problem, or system design entry must:
-* **Teach Systems Thinking**: Connect the algorithm directly to mobile client constraints (e.g. main-thread safety, CPU cycles, dynamic battery optimization, and low network bandwidth).
-* **Provide Dual Implementations**: Deliver complete, idiomatic side-by-side solutions in **Dart** and **Kotlin**.
-* **Follow the Standard Template**: Every problem entry must strictly implement the standard sections (Problem, Pattern, Approach, Complexity, Mobile Relevance, Tradeoffs, Code).
+Thank you for your interest in contributing to the **Scalable Systems & Engineering Patterns Handbook**! This repository serves as an open-source engineering handbook connecting algorithms, runtime mechanics, and distributed systems design to real-world software engineering.
 
 ---
 
-## 2. Code Quality Standards
-* **Dart**: Adhere strictly to the official Dart Style Guide (`dart format` and standard lints). Utilize type annotations and handle stream controllers safely.
-* **Kotlin**: Adhere strictly to the Kotlin Coding Conventions. Use coroutines and structured scopes, and prevent reference leaks.
-* **Documentation**: Include descriptive comments explaining complex pointers, swaps, or state updates. Do not use shortcuts.
+## 1. Repository Scope
+
+We welcome contributions across any of our core pillars:
+1. **Patterns**: General computer science algorithms mapped to systems-level resource optimizations.
+2. **Runtime Systems**: Memory allocations (stack vs. heap), GC optimizations, event loops, and async state machines.
+3. **Concurrency**: Mutexes, semaphores, atomics, lock-free patterns, and flow control.
+4. **Distributed Systems**: Retry systems, circuit breakers, rate limiting, and eventual consistency.
+5. **Backend Systems**: WebSocket architectures, API gateways, and ingestion pipelines.
+6. **Mobile Systems**: Client-side offline-first consistency, rendering passes, and bitmap caching.
 
 ---
 
-## 3. Markdown and Visual Standards
-* Every mathematical expression must use valid LaTeX syntax ($O(N)$, $\log N$).
-* Use structured **Mermaid** diagrams to visualize complex execution loops, thread swaps, and tree traversals.
+## 2. Technical Code Standards
+
+Every code contribution must meet our production-grade standard:
+* **Clean Code**: Ensure your variables use clear, explanatory terminology. Avoid short variable naming.
+* **Annotated Comments**: Comment complex pointer swaps, heap operations, and concurrency state transitions.
+* **Dual Implementations**: Where applicable, provide both **Kotlin** and **Dart** implementations side-by-side to demonstrate garbage collector and memory-visibility tradeoffs.
+* **Formatting**: Format code according to language guidelines (`dart format` and ktlint conventions).
+
+---
+
+## 3. Markdown Formatting Standards
+
+* Mathematical equations must use LaTeX formatting (e.g. $O(\log N)$).
+* Visualize architectural components using **Mermaid** sequence, state, or flow diagrams.
+* Ground your explanations in technical data, avoiding marketing fluff or introductory tutorials.
+* Structure problems using the standard layout: Problem, Pattern, Approach, Complexity, Systems Relevance, Code.

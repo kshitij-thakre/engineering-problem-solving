@@ -1,6 +1,11 @@
 # Least Recently Used (LRU) Cache
 
+This document details the design architecture, problem constraints, complexity tradeoffs, and real-world system applications of a Least Recently Used (LRU) cache.
+
+---
+
 ## 1. Problem Statement
+
 Design a data structure that follows the constraints of a **Least Recently Used (LRU) cache**.
 
 Implement the `LRUCache` class:
@@ -14,14 +19,14 @@ The functions `get` and `put` must run in $O(1)$ average time complexity.
 
 ## 2. Design Architecture: HashMap + Doubly Linked List
 
-To achieve absolute constant $O(1)$ time for both lookups and mutations, we combine two data structures:
+To achieve constant $O(1)$ time for both lookups and mutations, we combine two data structures:
 1. **Hash Map (`Map<Int, Node>`)**: Provides instant $O(1)$ average time key lookups. The value in the map is a pointer reference to a Node in a Doubly Linked List.
 2. **Doubly Linked List (`Node`)**: Provides constant time $O(1)$ insertions and removals. Nodes at the **head** represent the *most recently accessed* elements, while nodes at the **tail** represent the *least recently accessed* elements.
 
 ```
        [Head] <--> [Node 1] <--> [Node 2] <--> [Node 3] <--> [Tail]
-         ^                                                     ^
-         | (Most Recently Used)             (Least Recently Used) |
+          ^                                                     ^
+          | (Most Recently Used)             (Least Recently Used) |
 ```
 
 ### Hit/Miss & Eviction Actions
@@ -37,21 +42,24 @@ To achieve absolute constant $O(1)$ time for both lookups and mutations, we comb
 
 ---
 
-## 3. Real-World Mobile Engineering Use Cases
+## 3. Real-World Systems Engineering Use Cases
 
-### 1. Image Buffering & Bitmap Allocator Caches (Glide, Coil, Kingfisher)
-* Raw bitmaps are the primary source of Out-Of-Memory (OOM) crashes in mobile apps. An image loader library retains decoded bitmaps in memory using an **LRU Cache** bound to the device's heap limits (e.g. allocating 15% of available RAM). When memory boundaries are reached, older off-screen bitmaps are evicted and collected, allowing active scrolling lists to render seamlessly.
+### 1. Operating System Page Swapping & Virtual Memory
+Operating systems map virtual memory addresses to physical RAM. When physical RAM is depleted, the kernel's virtual memory manager uses an LRU replacement policy to swap out inactive memory pages (writing them to swap file disk storage) to free up physical memory frames for active processes.
 
-### 2. HTTP Network API Response Caching
-* To minimize dynamic cellular data consumption and support offline load states, the HTTP client caches response payloads locally using an LRU cache with ETag checks, evicting the least accessed offline payloads.
+### 2. Database Buffer Pools (e.g., PostgreSQL `shared_buffers`)
+Relational database management systems (RDBMS) minimize expensive disk spindle reads by maintaining a dedicated memory space called a Buffer Pool. Recently read disk blocks are stored in an LRU memory buffer. Subsequent SQL queries accessing the same rows hit the buffer in memory ($O(1)$) rather than executing random disk I/O.
+
+### 3. Mobile Client Bitmap Allocators (Coil, Glide, Kingfisher)
+Mobile viewports render graphics in memory-limited sandboxes. Raw decoded bitmaps require massive heap memory footprint ($width \times height \times 4\text{ bytes}$). Image loaders maintain a RAM LRU Cache. When heap allocations hit safe limits, the least-recently-seen bitmaps are evicted and garbage collected, preventing Out-Of-Memory (OOM) crashes.
 
 ---
 
 ## 4. Complexity & Tradeoffs
 
-* **Time Complexity:** $O(1)$ average time for both `get` and `put` methods. Hash Map lookups and Doubly Linked List pointer updates are constant-time operations.
-* **Space Complexity:** $O(C)$ where $C$ is the cache capacity. The maximum memory consumed is directly proportional to the defined capacity limit, which offers predictable heap allocation bounds.
-* **Tradeoffs:** We trade memory ($O(C)$ storage for both the HashMap and Doubly Linked List structure) to guarantee sub-millisecond, execution-safe lookups.
+* **Time Complexity:** $O(1)$ average time for both `get` and `put` operations.
+* **Space Complexity:** $O(C)$ where $C$ is the cache capacity.
+* **Tradeoffs:** We trade memory ($O(C)$ metadata overhead for doubly-linked node pointers and Hash Map buckets) to guarantee constant-time execution, protecting execution paths from linear list scans.
 
 ---
 
