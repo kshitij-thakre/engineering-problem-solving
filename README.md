@@ -73,3 +73,15 @@ We believe senior software engineers, platform architects, and systems developer
 ## 📄 License & Target Audience
 * **License**: [MIT License](./LICENSE)
 * **Target Audience**: Senior Software Engineers, Systems Architects, Mobile Platform Leads, and Distributed Systems Engineers.
+
+<!---LeetCode Topics Start-->
+# LeetCode Topics
+## Array
+|  |
+| ------- |
+| [1920-build-array-from-permutation](https://github.com/kshitij-thakre/engineering-problem-solving/tree/master/1920-build-array-from-permutation) |
+## Simulation
+|  |
+| ------- |
+| [1920-build-array-from-permutation](https://github.com/kshitij-thakre/engineering-problem-solving/tree/master/1920-build-array-from-permutation) |
+<!---LeetCode Topics End-->
