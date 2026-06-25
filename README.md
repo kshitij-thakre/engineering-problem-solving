@@ -79,6 +79,7 @@ We believe senior software engineers, platform architects, and systems developer
 ## Array
 |  |
 | ------- |
+| [0001-two-sum](https://github.com/kshitij-thakre/engineering-problem-solving/tree/master/0001-two-sum) |
 | [0027-remove-element](https://github.com/kshitij-thakre/engineering-problem-solving/tree/master/0027-remove-element) |
 | [1470-shuffle-the-array](https://github.com/kshitij-thakre/engineering-problem-solving/tree/master/1470-shuffle-the-array) |
 | [1920-build-array-from-permutation](https://github.com/kshitij-thakre/engineering-problem-solving/tree/master/1920-build-array-from-permutation) |
@@ -92,4 +93,8 @@ We believe senior software engineers, platform architects, and systems developer
 |  |
 | ------- |
 | [0027-remove-element](https://github.com/kshitij-thakre/engineering-problem-solving/tree/master/0027-remove-element) |
+## Hash Table
+|  |
+| ------- |
+| [0001-two-sum](https://github.com/kshitij-thakre/engineering-problem-solving/tree/master/0001-two-sum) |
 <!---LeetCode Topics End-->
