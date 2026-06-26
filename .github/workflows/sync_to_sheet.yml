@@ -3,7 +3,7 @@ name: Sync LeetHub Commits To Google Sheet
 on:
   push:
     branches:
-      - main  # Change this to 'master' if your LeetHub repo uses master instead of main
+      - main  # Change this to 'master' if your LeetHub repo branch is master
 
 jobs:
   sync:
@@ -15,19 +15,32 @@ jobs:
           fetch-depth: 2
 
       - name: Extract Problem Name and Push Payload
+        env:
+          GOOGLE_WEBAPP_URL: ${{ secrets.GOOGLE_WEBAPP_URL }}
         run: |
-          # Detect the directory added or modified in the latest commit
-          CHANGED_DIR=$(git diff-tree --no-commit-id --name-only -r HEAD | head -n 1 | cut -d '/' -f1)
-          
-          # Clean folder name (e.g., "0001-two-sum" -> "Two Sum")
-          CLEAN_NAME=$(echo "$CHANGED_DIR" | sed -E 's/^[0-9]+-//' | sed 's/-/ /g' | awk '{for(i=1;i<=NF;i++)sub(/./,toupper(substr($i,1,1)),$i)}1')
-          
+          # 1. Get the changed file path safely
           FILE_PATH=$(git diff-tree --no-commit-id --name-only -r HEAD | head -n 1)
+          echo "File changed: $FILE_PATH"
+          
+          # 2. Extract the parent folder name
+          CHANGED_DIR=$(echo "$FILE_PATH" | cut -d '/' -f1)
+          echo "Directory found: $CHANGED_DIR"
+          
+          # Guard clause: Ignore workflow configuration files themselves
+          if [ "$CHANGED_DIR" = ".github" ] || [ -z "$CHANGED_DIR" ]; then
+            echo "Workflow or root file change detected. Skipping sync."
+            exit 0
+          fi
+          
+          # 3. Format folder name (e.g., "0001-two-sum" -> "Two Sum")
+          CLEAN_NAME=$(echo "$CHANGED_DIR" | sed -E 's/^[0-9]+-//' | sed 's/-/ /g' | awk '{for(i=1;i<=NF;i++)sub(/./,toupper(substr($i,1,1)),$i)}1')
+          echo "Formatted problem name: $CLEAN_NAME"
+          
+          # 4. Construct complete file link
           FULL_URL="https://github.com/${{ github.repository }}/blob/main/$FILE_PATH"
           
-          if [ ! -z "$CLEAN_NAME" ] && [ "$CHANGED_DIR" != ".github" ]; then
-            echo "Syncing problem: $CLEAN_NAME"
-            curl -L -X POST "${{ secrets.GOOGLE_WEBAPP_URL }}" \
-              -H "Content-Type: application/json" \
-              -d "{\"problemName\":\"$CLEAN_NAME\", \"githubLink\":\"$FULL_URL\"}"
-          fi
+          # 5. Execute secure payload delivery
+          echo "Syncing payload to Google Sheets engine..."
+          curl -L -X POST "$GOOGLE_WEBAPP_URL" \
+            -H "Content-Type: application/json" \
+            -d "{\"problemName\":\"$CLEAN_NAME\", \"githubLink\":\"$FULL_URL\"}"
