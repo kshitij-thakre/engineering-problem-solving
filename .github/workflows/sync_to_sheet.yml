@@ -12,35 +12,42 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
         with:
-          fetch-depth: 1  # No depth dependency needed anymore
+          fetch-depth: 2  # Needs 2 to compare the latest commit with the previous one
 
       - name: Extract Latest LeetHub Folder and Push Payload
         env:
           GOOGLE_WEBAPP_URL: ${{ secrets.GOOGLE_WEBAPP_URL }}
         run: |
-          # 1. Find the most recently modified file in the repository (excluding system files)
-          FILE_PATH=$(find . -not -path '*/.*' -type f -exec stat -c '%Y %p' {} + | sort -n | tail -n 1 | cut -d' ' -f2- | sed 's|^\./||')
-          echo "Most recently touched file: $FILE_PATH"
+          # 1. Extract the file paths modified or added in the latest commit
+          echo "Inspecting latest commit logs..."
+          FILE_PATH=$(git diff-tree --no-commit-id --name-only -r HEAD | grep -E '\.(java|py|cpp|js|md)$' | head -n 1)
           
-          # 2. Extract the main problem directory name
+          # Fallback: if grep is strict, grab whatever file changed in the commit
+          if [ -z "$FILE_PATH" ]; then
+            FILE_PATH=$(git diff-tree --no-commit-id --name-only -r HEAD | head -n 1)
+          fi
+          
+          echo "File detected: $FILE_PATH"
+          
+          # 2. Isolate the target parent folder name
           CHANGED_DIR=$(echo "$FILE_PATH" | cut -d '/' -f1)
-          echo "Target problem directory: $CHANGED_DIR"
+          echo "Target folder name: $CHANGED_DIR"
           
-          # Guard clause: stop if it's empty or pointing to systemic directories
+          # Guard clause: Stop if it's empty or a workflow system update
           if [ -z "$CHANGED_DIR" ] || [ "$CHANGED_DIR" = ".github" ] || [ "$CHANGED_DIR" = "README.md" ]; then
-            echo "No valid algorithmic directory found. Skipping update."
+            echo "No algorithmic directory change found. Skipping update."
             exit 0
           fi
           
-          # 3. Format the problem directory (e.g., "0001-two-sum" -> "Two Sum")
+          # 3. Clean and title-case the problem name (e.g., "0001-two-sum" -> "Two Sum")
           CLEAN_NAME=$(echo "$CHANGED_DIR" | sed -E 's/^[0-9]+-//' | sed 's/-/ /g' | awk '{for(i=1;i<=NF;i++)sub(/./,toupper(substr($i,1,1)),$i)}1')
           echo "Cleaned problem name for Google Sheets: $CLEAN_NAME"
           
-          # 4. Create the final destination link
+          # 4. Create the final destination URL link
           FULL_URL="https://github.com/${{ github.repository }}/blob/main/$FILE_PATH"
           
-          # 5. Send payload safely to Google Apps Script
-          echo "Sending payload..."
+          # 5. Send secure transmission payload
+          echo "Sending payload to Google Web App..."
           curl -L -X POST "$GOOGLE_WEBAPP_URL" \
             -H "Content-Type: application/json" \
             -d "{\"problemName\":\"$CLEAN_NAME\", \"githubLink\":\"$FULL_URL\"}"
