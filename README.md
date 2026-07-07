@@ -82,6 +82,7 @@ We believe senior software engineers, platform architects, and systems developer
 | [0001-two-sum](https://github.com/kshitij-thakre/engineering-problem-solving/tree/master/0001-two-sum) |
 | [0027-remove-element](https://github.com/kshitij-thakre/engineering-problem-solving/tree/master/0027-remove-element) |
 | [0075-sort-colors](https://github.com/kshitij-thakre/engineering-problem-solving/tree/master/0075-sort-colors) |
+| [0217-contains-duplicate](https://github.com/kshitij-thakre/engineering-problem-solving/tree/master/0217-contains-duplicate) |
 | [1470-shuffle-the-array](https://github.com/kshitij-thakre/engineering-problem-solving/tree/master/1470-shuffle-the-array) |
 | [1920-build-array-from-permutation](https://github.com/kshitij-thakre/engineering-problem-solving/tree/master/1920-build-array-from-permutation) |
 | [1929-concatenation-of-array](https://github.com/kshitij-thakre/engineering-problem-solving/tree/master/1929-concatenation-of-array) |
@@ -99,8 +100,10 @@ We believe senior software engineers, platform architects, and systems developer
 |  |
 | ------- |
 | [0001-two-sum](https://github.com/kshitij-thakre/engineering-problem-solving/tree/master/0001-two-sum) |
+| [0217-contains-duplicate](https://github.com/kshitij-thakre/engineering-problem-solving/tree/master/0217-contains-duplicate) |
 ## Sorting
 |  |
 | ------- |
 | [0075-sort-colors](https://github.com/kshitij-thakre/engineering-problem-solving/tree/master/0075-sort-colors) |
+| [0217-contains-duplicate](https://github.com/kshitij-thakre/engineering-problem-solving/tree/master/0217-contains-duplicate) |
 <!---LeetCode Topics End-->
