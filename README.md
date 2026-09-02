@@ -106,4 +106,8 @@ We believe senior software engineers, platform architects, and systems developer
 | ------- |
 | [0075-sort-colors](https://github.com/kshitij-thakre/engineering-problem-solving/tree/master/0075-sort-colors) |
 | [0217-contains-duplicate](https://github.com/kshitij-thakre/engineering-problem-solving/tree/master/0217-contains-duplicate) |
+## Database
+|  |
+| ------- |
+| [0175-combine-two-tables](https://github.com/kshitij-thakre/engineering-problem-solving/tree/master/0175-combine-two-tables) |
 <!---LeetCode Topics End-->
